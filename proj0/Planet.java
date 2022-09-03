@@ -84,4 +84,13 @@ public class Planet {
 		this.yyPos = this.yyPos + dt * yyVel;
 	}
 
+	// Drawing one Planet
+	public void drawPlanet() {
+		String pathname ="./images/";
+		String fileName = pathname + imgFileName;
+	 	StdDraw.picture(xxPos, yyPos, fileName);
+		 /* Shows the drawing to the screen. */
+		StdDraw.show();
+	}
+
 }
