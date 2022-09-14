@@ -87,7 +87,10 @@ public class IntList {
 //            return B;
 //        }
 //        return (A.first,dcatenate(A.rest, B));
-        /** Interative: success */
+        /** Iterative: success */
+        if (A == null) {
+            return B;
+        }
         IntList tmp = A;
         while (tmp.rest != null) {
             tmp = tmp.rest;
@@ -109,6 +112,9 @@ public class IntList {
 //        return new IntList(A.first, catenate(A.rest, B));
 
         // Interative: success
+        if (A == null) {
+            return B;
+        }
         IntList newList = new IntList(A.first, null);
         IntList tempNew = newList;
         IntList tempOld = A;
