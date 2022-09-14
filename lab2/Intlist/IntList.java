@@ -5,7 +5,7 @@ import java.util.Formatter;
  * with a large number of additional methods.
  *
  * @author P. N. Hilfinger, with some modifications by Josh Hug and melaniecebula
- *         [Do not modify this file.]
+ * [Do not modify this file.]
  */
 public class IntList {
     /**
@@ -29,7 +29,7 @@ public class IntList {
      * A List with null rest, and first = 0.
      */
     public IntList() {
-    /* NOTE: public IntList () { }  would also work. */
+        /* NOTE: public IntList () { }  would also work. */
         this(0, null);
     }
 
@@ -82,7 +82,18 @@ public class IntList {
 
     public static IntList dcatenate(IntList A, IntList B) {
         //TODO:  fill in method
-        return null;
+//        // Recursive methods ???
+//        if (A == null) {
+//            return B;
+//        }
+//        return (A.first,dcatenate(A.rest, B));
+        /** Interative: success */
+        IntList tmp = A;
+        while (tmp.rest != null) {
+            tmp = tmp.rest;
+        }
+        tmp.rest = B;
+        return A;
     }
 
     /**
@@ -91,22 +102,36 @@ public class IntList {
      */
     public static IntList catenate(IntList A, IntList B) {
         //TODO:  fill in method
-        return null;
+        // Recursive method: success
+//        if (A == null) {
+//            return B;
+//        }
+//        return new IntList(A.first, catenate(A.rest, B));
+
+        // Interative: success
+        IntList newList = new IntList(A.first, null);
+        IntList tempNew = newList;
+        IntList tempOld = A;
+        tempOld = tempOld.rest;
+        while (tempOld != null) {
+            tempNew.rest = new IntList(tempOld.first, null);
+            tempNew = tempNew.rest;
+            tempOld = tempOld.rest;
+        }
+        tempNew.rest = B;
+        return newList;
     }
 
+    /**
+     * Test methods
+     */
+    public static void main(String[] args) {
+        IntList origL = IntList.of(1, 2, 3);
+//        dSquareList(origL);
+        squareListIterative(origL);
+        squareListRecursive(origL);
 
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
     /**
