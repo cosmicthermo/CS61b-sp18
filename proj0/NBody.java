@@ -74,20 +74,22 @@ public class NBody {
 
 				StdDraw.setScale(-xxMax, xxMax);
 				/* Clears the drawing window. */
-				StdDraw.clear();
+				// StdDraw.clear();
 				StdDraw.picture(0, 0, imageToDraw);
 
 				/* Drawing all planets */
-				System.out.println(allPlanets);
+				// System.out.println(allPlanets);
 				for (Planet planet: allPlanets) {
-					planet.drawPlanet();
-					// StdDraw.show();
+					planet.draw();
 				}	
 				StdDraw.show();
 				StdDraw.pause(10);
 				timeVar += dt;
 
 			}
+			String audioToPlay = "./audio/2001.mid";
+			StdAudio.play(audioToPlay);
+
 
 		}
 		StdOut.printf("%d\n", allPlanets.length);

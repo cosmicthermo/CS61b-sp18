@@ -85,7 +85,7 @@ public class Planet {
 	}
 
 	// Drawing one Planet
-	public void drawPlanet() {
+	public void draw() {
 		String pathname ="./images/";
 		String fileName = pathname + imgFileName;
 	 	StdDraw.picture(xxPos, yyPos, fileName);
