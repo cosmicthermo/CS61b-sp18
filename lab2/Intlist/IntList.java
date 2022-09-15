@@ -82,21 +82,28 @@ public class IntList {
 
     public static IntList dcatenate(IntList A, IntList B) {
         //TODO:  fill in method
-//        // Recursive methods ???
-//        if (A == null) {
-//            return B;
-//        }
-//        return (A.first,dcatenate(A.rest, B));
-        /** Iterative: success */
+        /** Null case for both methods */
         if (A == null) {
             return B;
         }
-        IntList tmp = A;
-        while (tmp.rest != null) {
-            tmp = tmp.rest;
+        IntList ptr = A;
+        /** Iterative: success */
+//        while (ptr.rest != null) {
+//            ptr = ptr.rest;
+//        }
+//        ptr.rest = B;
+//        return A;
+        //        // Recursive methods ???
+        return dcatenate(A, B, ptr.rest);
+
+    }
+
+    public static IntList dcatenate(IntList A, IntList B, IntList ptr) {
+        if (ptr.rest == null) {
+            ptr.rest = B;
+            return A;
         }
-        tmp.rest = B;
-        return A;
+        return dcatenate(A, B, ptr.rest);
     }
 
     /**
