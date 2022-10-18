@@ -188,6 +188,7 @@ public class LinkedListDeque<T> {
         } else {
             return (T) getRecursive(--index, temp.next);
         }
+        
     }
 
 
