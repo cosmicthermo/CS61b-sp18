@@ -15,6 +15,7 @@ public class ArrayDeque<T> {
      */
     private static final int STARTINGSIZE = 8;
     private static int REFACTOR = 2;
+    private static double DOWNFACTOR = 4;
     private int size;
     private T[] aDeque;
     // This is to record the index of first and last item.
@@ -33,19 +34,12 @@ public class ArrayDeque<T> {
         nextFirst = nextLast - 1;
     }
 
-    // Copy an additional array
-//    public ArrayDeque(ArrayDeque other) {
-//        for (int i = 0; i < other.size(); i += 1) {
-//            addLast((Item) other.get(i));
-//        }
-//    }
-
-
     private void resize(int factor) {
         T[] temp = (T[]) new Object[aDeque.length * REFACTOR];
         System.arraycopy(aDeque, 0, temp, 0, nextFirst + 1);
-        int secondHalfSize = size - nextLast;
-        System.arraycopy(aDeque, nextLast, temp, temp.length - secondHalfSize, secondHalfSize);
+        int secondHalfSize = size - (nextFirst + 1);
+        System.arraycopy(aDeque, nextFirst + 1, temp, temp.length - secondHalfSize, secondHalfSize);
+        nextFirst = temp.length - secondHalfSize - 1;
         aDeque = temp;
     }
 
@@ -86,9 +80,23 @@ public class ArrayDeque<T> {
         }
     }
 
-    // 1 0 0 6
-    // |nl nf|
+    // Remove private funcion: Copy the aDeque into a new downsized array.
+    // Start from the center of the resized array.
+    private void sizeDown() {
+        //DOWNFACTOR * 2
+        int refactor = aDeque.length / REFACTOR;
+        T[] temp = (T[]) new Object[refactor];
+        int startInd = refactor / 2 - 1;
+        System.arraycopy(aDeque, nextFirst + 1, temp, startInd, size);
+        nextFirst = startInd - 1;
+        nextLast = startInd + size;
+        aDeque = temp;
+    }
+
     public T removeFirst() {
+        if (size < aDeque.length / DOWNFACTOR) {
+            sizeDown();
+        }
         if (size == 0) {
             return null;
         }
@@ -97,16 +105,21 @@ public class ArrayDeque<T> {
             nextFirst = 0;
             returnItem = aDeque[nextFirst];
             aDeque[nextFirst] = null;
+            size--;
+            return returnItem;
         } else {
             returnItem = aDeque[nextFirst + 1];
             aDeque[nextFirst + 1] = null;
+            nextFirst++;
+            size--;
+            return returnItem;
         }
-        nextFirst++;
-        size--;
-        return returnItem;
     }
 
     public T removeLast() {
+        if (size < aDeque.length / DOWNFACTOR) {
+            sizeDown();
+        }
         if (size == 0) {
             return null;
         }
@@ -115,13 +128,15 @@ public class ArrayDeque<T> {
             nextLast = aDeque.length - 1;
             returnItem = aDeque[nextLast];
             aDeque[nextLast] = null;
+            size--;
+            return returnItem;
         } else {
             returnItem = aDeque[nextLast - 1];
             aDeque[nextLast - 1] = null;
+            nextLast--;
+            size--;
+            return returnItem;
         }
-        nextLast--;
-        size--;
-        return returnItem;
     }
 
     public T get(int index) {
@@ -130,14 +145,16 @@ public class ArrayDeque<T> {
         }
         int indexForaDeque = nextFirst + index + 1;
         if (indexForaDeque > aDeque.length - 1) {
-            indexForaDeque -= size;
+            indexForaDeque = indexForaDeque - aDeque.length;
         }
         return aDeque[indexForaDeque];
     }
 
     public void printDeque() {
         for (int i = 0; i < size; i += 1) {
-            System.out.print(aDeque[i]);
+//            System.out.println("This index fucked" + get(i));
+            T it = get(i);
+            System.out.print(get(i));
             System.out.print(" ");
         }
         System.out.println();

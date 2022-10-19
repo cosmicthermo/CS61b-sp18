@@ -50,15 +50,27 @@ public class ArrayDequeTest {
     @Test
     public void testMegaArray() {
         ArrayDeque<Integer> testAd1 = new ArrayDeque<>();
+        testAd1.addFirst(10);
         testAd1.addLast(100);
         testAd1.addLast(200);
         testAd1.addLast(300);
         testAd1.addLast(400);
         testAd1.addLast(500);
         testAd1.addLast(600);
-        assertEquals((Integer) 400, testAd1.get(3)); //400
-        assertEquals((Integer) 300, testAd1.get(2));
+        testAd1.addLast(70);
+        testAd1.addFirst(5);
+        assertEquals((Integer) 200, testAd1.get(3)); //400
+        assertEquals((Integer) 5, testAd1.get(0));
+        assertEquals(9, testAd1.size());
         testAd1.printDeque();
+        testAd1.removeLast();
+        testAd1.removeLast();
+        testAd1.removeLast();
+        testAd1.removeLast();
+        testAd1.removeLast();
+        testAd1.removeLast();
+        testAd1.removeLast();
+        int size = testAd1.size();
     }
 
     @Test
