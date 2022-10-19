@@ -15,19 +15,31 @@ public class ArrayDequeTest {
     }
 
     @Test
-    public void testAddDelFirstGet() {
+    public void testAddDelWtResize() {
         ArrayDeque<Integer> testAd1 = new ArrayDeque<>();
+        assertEquals(true, testAd1.isEmpty());
         testAd1.addFirst(100);
         testAd1.addFirst(200);
         testAd1.addFirst(300);
-        assertEquals((Integer) 300, testAd1.get(0));
-        assertEquals((Integer) 100, testAd1.get(2));
+        testAd1.addFirst(4);
+        assertEquals((Integer) 4, testAd1.get(0));
+        assertEquals((Integer) 200, testAd1.get(2));
 
         // Delete
         int remove1 = testAd1.removeFirst();
-        int remove2 = testAd1.removeFirst();
-        assertEquals(300, remove1);
-        assertEquals(200, remove2);
+        assertEquals(4, remove1);
+        int remove2 = testAd1.removeLast();
+        assertEquals(100, remove2);
+        assertEquals(false, testAd1.isEmpty());
+        testAd1.removeLast();
+        int remove3 = testAd1.removeFirst();
+        assertEquals(300, remove3);
+        assertEquals(true, testAd1.isEmpty());
+        testAd1.addFirst(100);
+        testAd1.addLast(200);
+        testAd1.addFirst(50);
+        testAd1.printDeque();
+        assertEquals(false, testAd1.isEmpty());
     }
 
     @Test
@@ -71,6 +83,7 @@ public class ArrayDequeTest {
         testAd1.removeLast();
         testAd1.removeLast();
         int size = testAd1.size();
+        testAd1.printDeque();
     }
 
     @Test

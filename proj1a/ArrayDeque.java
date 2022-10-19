@@ -10,150 +10,137 @@
  */
 
 public class ArrayDeque<T> {
-    /**
-     * Defining variables and constant.
-     */
-    private static final int STARTINGSIZE = 8;
-    private static int REFACTOR = 2;
-    private static double DOWNFACTOR = 4;
     private int size;
-    private T[] aDeque;
-    // This is to record the index of first and last item.
-    private int nextLast;
-    private int nextFirst;
-
-    // Correcting the index for the list.
+    private T[] conceptArray;
+    private int dequeLength;
+    private int last;
+    private int first;
 
     /**
      * Creates an empty list. Constructor:
      */
     public ArrayDeque() {
         size = 0;
-        aDeque = (T[]) new Object[STARTINGSIZE];
-        nextLast = STARTINGSIZE / 2;
-        nextFirst = nextLast - 1;
+        dequeLength = 4;
+        int start = dequeLength / 2;
+        conceptArray = (T[]) new Object[dequeLength];
+        last = start;
+        first = start - 1;
     }
 
-    private void resize(int factor) {
-        T[] temp = (T[]) new Object[aDeque.length * REFACTOR];
-        System.arraycopy(aDeque, 0, temp, 0, nextFirst + 1);
-        int secondHalfSize = size - (nextFirst + 1);
-        System.arraycopy(aDeque, nextFirst + 1, temp, temp.length - secondHalfSize, secondHalfSize);
-        nextFirst = temp.length - secondHalfSize - 1;
-        aDeque = temp;
+    private int minusOne(int index) {
+        if (index == 0) {
+            index = dequeLength - 1;
+        } else {
+            index--;
+        }
+        return index;
+    }
+
+    private int plusOne(int index, int length) {
+        index++;
+        index %= length;
+        return index;
     }
 
     /**
-     * Similar to AList, but it changes the nextFirst index
+     * Similar to AList, but it changes the first index
      */
     public void addFirst(T item) {
-        if (size >= aDeque.length) {
-            resize(REFACTOR);
+        // TODO: grow funcion
+        if (size == dequeLength) {
+            grow();
         }
-        // Resigning the index to nextFirst index.
-        if (nextFirst < 0) {
-            nextFirst = aDeque.length - 1;
-            aDeque[nextFirst] = item;
-            nextFirst -= 1;
-            size += 1;
-        } else {
-            aDeque[nextFirst] = item;
-            nextFirst -= 1;
-            size += 1;
-        }
+        conceptArray[first] = item;
+        first = minusOne(first);
+        size++;
     }
 
     public void addLast(T item) {
-        if (size >= aDeque.length) {
-            resize(REFACTOR);
+        // TODO: grow func
+        if (size == dequeLength) {
+            grow();
         }
-        // Resigning the index to nextFirst index.
-        if (nextLast >= aDeque.length) {
-            nextLast = 0;
-            aDeque[nextLast] = item;
-            nextLast += 1;
-            size += 1;
-        } else {
-            aDeque[nextLast] = item;
-            nextLast += 1;
-            size += 1;
-        }
+        conceptArray[last] = item;
+        last = plusOne(last, dequeLength);
+        size++;
     }
 
-    // Remove private funcion: Copy the aDeque into a new downsized array.
-    // Start from the center of the resized array.
-    private void sizeDown() {
-        //DOWNFACTOR * 2
-        int refactor = aDeque.length / REFACTOR;
-        T[] temp = (T[]) new Object[refactor];
-        int startInd = refactor / 2 - 1;
-        System.arraycopy(aDeque, nextFirst + 1, temp, startInd, size);
-        nextFirst = startInd - 1;
-        nextLast = startInd + size;
-        aDeque = temp;
-    }
 
     public T removeFirst() {
-        if (size < aDeque.length / DOWNFACTOR) {
-            sizeDown();
+        // TODO: shrink func
+        if (size >= 16 && dequeLength / size == 4) {
+            shrink();
         }
-        if (size == 0) {
-            return null;
-        }
-        T returnItem;
-        if (nextFirst >= aDeque.length - 1) {
-            nextFirst = 0;
-            returnItem = aDeque[nextFirst];
-            aDeque[nextFirst] = null;
-            size--;
-            return returnItem;
-        } else {
-            returnItem = aDeque[nextFirst + 1];
-            aDeque[nextFirst + 1] = null;
-            nextFirst++;
-            size--;
-            return returnItem;
-        }
+        first = plusOne(first, dequeLength);
+        T returnItem = conceptArray[first];
+        conceptArray[first] = null;
+        size--;
+        return returnItem;
     }
 
     public T removeLast() {
-        if (size < aDeque.length / DOWNFACTOR) {
-            sizeDown();
+        // TODO: shrink func
+        if (dequeLength >= 16 && dequeLength / size == 4) {
+            shrink();
         }
-        if (size == 0) {
-            return null;
-        }
-        T returnItem;
-        if (nextLast <= 0) {
-            nextLast = aDeque.length - 1;
-            returnItem = aDeque[nextLast];
-            aDeque[nextLast] = null;
-            size--;
-            return returnItem;
-        } else {
-            returnItem = aDeque[nextLast - 1];
-            aDeque[nextLast - 1] = null;
-            nextLast--;
-            size--;
-            return returnItem;
-        }
+        last = minusOne(last);
+        T retItem = conceptArray[last];
+        conceptArray[last] = null;
+        size--;
+        return retItem;
     }
 
+    // Ensure get function runs constant time.
     public T get(int index) {
-        if (index > size - 1) {
+        if (index > size) {
             return null;
         }
-        int indexForaDeque = nextFirst + index + 1;
-        if (indexForaDeque > aDeque.length - 1) {
-            indexForaDeque = indexForaDeque - aDeque.length;
+        int indexForaDeque = first + index + 1;
+        if (indexForaDeque > dequeLength - 1) {
+            indexForaDeque = indexForaDeque - dequeLength;
         }
-        return aDeque[indexForaDeque];
+        return conceptArray[indexForaDeque];
+    }
+
+    /**
+     * Second stage for Scaling up and down (resizing) procedure.
+     */
+    private void grow() {
+        T[] newArray = (T[]) new Object[dequeLength * 2];
+        int pt1 = first;
+        int pt2 = dequeLength;
+        int i = size;
+        while (i-- != 0) {
+            pt1 = plusOne(pt1, dequeLength);
+            newArray[pt2] = conceptArray[pt1];
+            pt2 = plusOne(pt2, newArray.length);
+        }
+        last = pt2;
+        first = minusOne(dequeLength);
+        dequeLength *= 2;
+        conceptArray = newArray;
+    }
+
+    private void shrink() {
+        int nwLength = dequeLength / 2;
+        T[] newArray = (T[]) new Object[nwLength];
+        int pt1 = first;
+        int pt2 = nwLength / 2;
+        int i = size;
+        while (i-- != 0) {
+            pt1 = plusOne(pt1, dequeLength);
+            newArray[pt2] = conceptArray[pt1];
+            pt2 = plusOne(pt2, nwLength);
+        }
+        last = pt2;
+        first = minusOne(nwLength / 2);
+        dequeLength = nwLength;
+        conceptArray = newArray;
     }
 
     public void printDeque() {
         for (int i = 0; i < size; i += 1) {
-//            System.out.println("This index fucked" + get(i));
-            T it = get(i);
             System.out.print(get(i));
             System.out.print(" ");
         }
