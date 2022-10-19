@@ -72,28 +72,6 @@ public class LinkedListGetTest {
         assertEquals(66, removeThr);
     }
 
-    @Test
-    public void testAddDeleteFirst() {
-        System.out.println("Add delete Item test.");
-        LinkedListDeque<Integer> lld1 = new LinkedListDeque<>();
-
-        lld1.addLast(44);
-        assertEquals(false, lld1.isEmpty());
-
-        int remove_1 = lld1.removeFirst();
-        assertEquals(44, remove_1);
-
-        lld1.addLast(44);
-        lld1.addLast(55);
-        lld1.addLast(66);
-        lld1.addLast(88);
-        assertEquals(false, lld1.isEmpty());
-
-
-        int remove_2 = lld1.removeFirst();
-        int remove_3 = lld1.removeFirst();
-        assertEquals(55, remove_3);
-    }
 
     public static void main(String[] args) {
         System.out.println("Running tests.\n");

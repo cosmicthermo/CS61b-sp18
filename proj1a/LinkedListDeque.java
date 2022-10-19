@@ -100,7 +100,8 @@ public class LinkedListDeque<T> {
     }
 
     /**
-     * Prints the items in the deque from first to last, separated by a space. Once all the items have been printed,
+     * Prints the items in the deque from first to last,
+     * separated by a space. Once all the items have been printed,
      * print out a new line
      */
     public void printDeque() {
@@ -155,8 +156,10 @@ public class LinkedListDeque<T> {
     }
 
     /**
-     * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth. If no such item
-     * exists, returns null. Must not alter the deque!
+     * Gets the item at the given index,
+     * where 0 is the front, 1 is the next item, and so forth.
+     * If no such item exists, returns null.
+     * Must not alter the deque!
      */
     public T get(int index) {
         if (size == 0 || index >= size) {
