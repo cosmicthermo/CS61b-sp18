@@ -20,8 +20,8 @@ public class ArrayDequeTest {
         testAd1.addFirst(100);
         testAd1.addFirst(200);
         testAd1.addFirst(300);
-        assertEquals((Integer) 200, testAd1.get(0));
-        assertEquals((Integer) 300, testAd1.get(4));
+        assertEquals((Integer) 300, testAd1.get(0));
+        assertEquals((Integer) 100, testAd1.get(2));
 
         // Delete
         int remove1 = testAd1.removeFirst();
@@ -37,8 +37,8 @@ public class ArrayDequeTest {
         testAd1.addLast(200);
         testAd1.addLast(300);
         testAd1.addLast(400);
-        assertEquals((Integer) 400, testAd1.get(0)); //400
-        assertEquals((Integer) 300, testAd1.get(4));
+        assertEquals((Integer) 400, testAd1.get(3)); //400
+        assertEquals((Integer) 300, testAd1.get(2));
 
         // Delete
         int remove1 = testAd1.removeLast();
@@ -56,8 +56,25 @@ public class ArrayDequeTest {
         testAd1.addLast(400);
         testAd1.addLast(500);
         testAd1.addLast(600);
-        assertEquals((Integer) 400, testAd1.get(0)); //400
-        assertEquals((Integer) 300, testAd1.get(9));
+        assertEquals((Integer) 400, testAd1.get(3)); //400
+        assertEquals((Integer) 300, testAd1.get(2));
+        testAd1.printDeque();
+    }
+
+    @Test
+    public void testRemove() {
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        deque.addFirst(0);
+        deque.addFirst(3);
+        deque.addFirst(4);
+        deque.isEmpty();
+        deque.removeFirst();
+        deque.removeFirst();
+//        deque.addFirst(7);
+//        deque.removeLast();
+//        deque.addFirst(9);
+        int remove = deque.removeFirst();
+        assertEquals(0, remove);
     }
 
     public static void main(String[] args) {

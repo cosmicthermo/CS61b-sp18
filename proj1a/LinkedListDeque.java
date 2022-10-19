@@ -16,9 +16,9 @@
  */
 public class LinkedListDeque<T> {
     private class ItemNode {
-        public ItemNode prev;
-        public T item;
-        public ItemNode next;
+        private ItemNode prev;
+        private T item;
+        private ItemNode next;
 
         // This is a method for initialization.
         public ItemNode(T i, ItemNode pv, ItemNode nt) {
@@ -51,17 +51,17 @@ public class LinkedListDeque<T> {
      *
      * @source https://www.youtube.com/watch?v=JNroRiEG7U4
      */
-    public LinkedListDeque(LinkedListDeque other) {
-        size = 0;
-        // Initialize sentinel.
-        sentinel = other.sentinel;
-        sentinel.next = sentinel;
-        sentinel.prev = sentinel;
-
-        for (int i = 0; i < other.size(); i += 1) {
-            addLast((T) other.get(i));
-        }
-    }
+//    public LinkedListDeque(LinkedListDeque other) {
+//        size = 0;
+//        // Initialize sentinel.
+//        sentinel = other.sentinel;
+//        sentinel.next = sentinel;
+//        sentinel.prev = sentinel;
+//
+//        for (int i = 0; i < other.size(); i += 1) {
+//            addLast((T) other.get(i));
+//        }
+//    }
 
     // senti >< , < first > senti.
     // senti >< , < first > senti , < second > senti
@@ -141,7 +141,7 @@ public class LinkedListDeque<T> {
         T itemReturn = (T) sentinel.prev.item;
         sentinel.prev.prev.next = sentinel;
         sentinel.prev = sentinel.prev.prev;
-        
+
         size--;
         return itemReturn;
     }

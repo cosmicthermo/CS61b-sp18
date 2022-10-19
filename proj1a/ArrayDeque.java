@@ -6,41 +6,43 @@
  * removeFirstLast. Done
  * 2. Resizing the array, which you can consider the first case of the slide.
  *
- * @param <Item>
+ * @param <T>
  */
 
-public class ArrayDeque<Item> {
+public class ArrayDeque<T> {
     /**
      * Defining variables and constant.
      */
-    private static final int STARTINGSIZE = 5;
+    private static final int STARTINGSIZE = 8;
     private static int REFACTOR = 2;
     private int size;
-    private Item[] aDeque;
+    private T[] aDeque;
     // This is to record the index of first and last item.
     private int nextLast;
     private int nextFirst;
+
+    // Correcting the index for the list.
 
     /**
      * Creates an empty list. Constructor:
      */
     public ArrayDeque() {
         size = 0;
-        aDeque = (Item[]) new Object[STARTINGSIZE];
+        aDeque = (T[]) new Object[STARTINGSIZE];
         nextLast = STARTINGSIZE / 2;
         nextFirst = nextLast - 1;
     }
 
     // Copy an additional array
-    public ArrayDeque(ArrayDeque other) {
-        for (int i = 0; i < other.size(); i += 1) {
-            addLast((Item) other.get(i));
-        }
-    }
+//    public ArrayDeque(ArrayDeque other) {
+//        for (int i = 0; i < other.size(); i += 1) {
+//            addLast((Item) other.get(i));
+//        }
+//    }
 
 
     private void resize(int factor) {
-        Item[] temp = (Item[]) new Object[aDeque.length * REFACTOR];
+        T[] temp = (T[]) new Object[aDeque.length * REFACTOR];
         System.arraycopy(aDeque, 0, temp, 0, nextFirst + 1);
         int secondHalfSize = size - nextLast;
         System.arraycopy(aDeque, nextLast, temp, temp.length - secondHalfSize, secondHalfSize);
@@ -50,7 +52,7 @@ public class ArrayDeque<Item> {
     /**
      * Similar to AList, but it changes the nextFirst index
      */
-    public void addFirst(Item item) {
+    public void addFirst(T item) {
         if (size >= aDeque.length) {
             resize(REFACTOR);
         }
@@ -67,7 +69,7 @@ public class ArrayDeque<Item> {
         }
     }
 
-    public void addLast(Item item) {
+    public void addLast(T item) {
         if (size >= aDeque.length) {
             resize(REFACTOR);
         }
@@ -86,11 +88,11 @@ public class ArrayDeque<Item> {
 
     // 1 0 0 6
     // |nl nf|
-    public Item removeFirst() {
+    public T removeFirst() {
         if (size == 0) {
             return null;
         }
-        Item returnItem;
+        T returnItem;
         if (nextFirst >= aDeque.length - 1) {
             nextFirst = 0;
             returnItem = aDeque[nextFirst];
@@ -104,11 +106,11 @@ public class ArrayDeque<Item> {
         return returnItem;
     }
 
-    public Item removeLast() {
+    public T removeLast() {
         if (size == 0) {
             return null;
         }
-        Item returnItem;
+        T returnItem;
         if (nextLast <= 0) {
             nextLast = aDeque.length - 1;
             returnItem = aDeque[nextLast];
@@ -122,8 +124,15 @@ public class ArrayDeque<Item> {
         return returnItem;
     }
 
-    public Item get(int index) {
-        return aDeque[index];
+    public T get(int index) {
+        if (index > size - 1) {
+            return null;
+        }
+        int indexForaDeque = nextFirst + index + 1;
+        if (indexForaDeque > aDeque.length - 1) {
+            indexForaDeque -= size;
+        }
+        return aDeque[indexForaDeque];
     }
 
     public void printDeque() {
@@ -142,8 +151,4 @@ public class ArrayDeque<Item> {
         return size;
     }
 
-    public static void main(String[] args) {
-//        ArrayDeque testAd1 = new ArrayDeque();
-//        testAd1.addFirst(9);
-    }
 }
