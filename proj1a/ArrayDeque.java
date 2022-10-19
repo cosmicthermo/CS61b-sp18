@@ -47,7 +47,6 @@ public class ArrayDeque<T> {
      * Similar to AList, but it changes the first index
      */
     public void addFirst(T item) {
-        // TODO: grow funcion
         if (size == dequeLength) {
             grow();
         }
@@ -57,7 +56,6 @@ public class ArrayDeque<T> {
     }
 
     public void addLast(T item) {
-        // TODO: grow func
         if (size == dequeLength) {
             grow();
         }
@@ -68,7 +66,9 @@ public class ArrayDeque<T> {
 
 
     public T removeFirst() {
-        // TODO: shrink func
+        if (size == 0) {
+            return null;
+        }
         if (size >= 16 && dequeLength / size == 4) {
             shrink();
         }
@@ -80,7 +80,9 @@ public class ArrayDeque<T> {
     }
 
     public T removeLast() {
-        // TODO: shrink func
+        if (size == 0) {
+            return null;
+        }
         if (dequeLength >= 16 && dequeLength / size == 4) {
             shrink();
         }
