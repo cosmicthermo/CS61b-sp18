@@ -14,9 +14,6 @@ public class Palindrome {
 
 
     public boolean isPalindrome(String word) {
-        if (word.length() <= 1) {
-            return true;
-        }
         Deque<Character> deque = wordToDeque(word);
         return isPalindromeHelper(deque);
     }
@@ -26,6 +23,19 @@ public class Palindrome {
             return true;
         }
         return deque.removeFirst().equals(deque.removeLast()) && isPalindromeHelper(deque);
+    }
+
+    // Task 4 OffByObe palindrome
+    public boolean isPalindrome(String word, CharacterComparator cc) {
+        Deque<Character> deque = wordToDeque(word);
+        return oboIsPalindromeHelper(deque, cc);
+    }
+
+    private boolean oboIsPalindromeHelper(Deque<Character> deque, CharacterComparator cc) {
+        if (deque.size() <= 1) {
+            return true;
+        }
+        return cc.equalChars(deque.removeFirst(), deque.removeLast()) && oboIsPalindromeHelper(deque, cc);
     }
 
 

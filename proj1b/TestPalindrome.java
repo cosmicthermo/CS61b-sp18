@@ -25,4 +25,20 @@ public class TestPalindrome {
         assertFalse(palindrome.isPalindrome("abbb"));
         assertTrue(palindrome.isPalindrome("racecar"));
     }
+
+    // Test OffByOne Palindrome
+    @Test
+    public void testOBOIsPalindrome() {
+        CharacterComparator cc = new OffByOne();
+        assertTrue(palindrome.isPalindrome("", cc));
+        assertTrue(palindrome.isPalindrome("a", cc));
+        assertTrue(palindrome.isPalindrome("flake", cc));
+        assertFalse(palindrome.isPalindrome("racecar", cc));
+        assertFalse(palindrome.isPalindrome("abbbb", cc));
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Running Array Deque tests.\n");
+        jh61b.junit.TestRunner.runTests("all", TestPalindrome.class);
+    }
 }
