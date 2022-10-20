@@ -35,7 +35,8 @@ public class Palindrome {
         if (deque.size() <= 1) {
             return true;
         }
-        return cc.equalChars(deque.removeFirst(), deque.removeLast()) && oboIsPalindromeHelper(deque, cc);
+        return cc.equalChars(deque.removeFirst(), deque.removeLast())
+                && oboIsPalindromeHelper(deque, cc);
     }
 
 

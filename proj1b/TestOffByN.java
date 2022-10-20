@@ -7,7 +7,7 @@ public class TestOffByN {
     static CharacterComparator offByThr = new OffByN(3);
 
     @Test
-    public void TestOBT() {
+    public void testOBT() {
         assertTrue(offByThr.equalChars('a', 'd'));
         assertTrue(offByThr.equalChars('d', 'a'));
         assertFalse(offByThr.equalChars('d', 'f'));
