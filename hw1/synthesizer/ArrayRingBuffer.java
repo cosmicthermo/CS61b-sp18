@@ -1,5 +1,7 @@
 package synthesizer;
 
+import java.util.Iterator;
+
 public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     /* Index for the next dequeue or peek. */
     private int first;            // index for the next dequeue or peek
@@ -62,6 +64,31 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      */
     public T peek() {
         return rb[first];
+    }
+
+    public Iterator<T> iterator() {
+        return new ArrayRingIterator();
+    }
+
+    private class ArrayRingIterator implements Iterator<T> {
+        private int ftpt;
+        private int nwSize;
+
+        public ArrayRingIterator() {
+            ftpt = first;
+            nwSize = 0;
+        }
+
+        public T next() {
+            T returnItem = rb[ftpt];
+            ftpt = plusOne(ftpt);
+            nwSize++;
+            return returnItem;
+        }
+
+        public boolean hasNext() {
+            return nwSize < fillCount;
+        }
     }
 
 }

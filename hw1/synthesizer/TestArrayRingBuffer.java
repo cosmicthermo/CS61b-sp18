@@ -20,12 +20,19 @@ public class TestArrayRingBuffer {
         arb.enqueue(1);
         arb.enqueue(2);
         arb.enqueue(3);
+        for (Integer a : arb) {
+            System.out.print(a + " ");
+        }
         assertTrue(arb.isFull());
         assertEquals((Object) 1, arb.dequeue());
         arb.dequeue();
         arb.dequeue();
         arb.enqueue(1);
         arb.enqueue(2);
+        arb.enqueue(4);
+        for (Integer a : arb) {
+            System.out.println(a);
+        }
         assertFalse(arb.isEmpty());
         assertEquals((Object) 1, arb.peek());
     }
