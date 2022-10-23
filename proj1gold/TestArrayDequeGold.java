@@ -26,7 +26,6 @@ public class TestArrayDequeGold {
                 Integer rmStu = stdQue.removeFirst();
                 Integer rmSol = solu.removeFirst();
                 funcCalled.addLast("removeFirst()");
-
                 String mes = getErrorMegs(funcCalled);
                 assertEquals(mes, rmSol, rmStu);
             } else if (prob <= 0.75) {
@@ -42,6 +41,7 @@ public class TestArrayDequeGold {
                 solu.addLast(addTw);
                 funcCalled.addLast("addLast(" + addTw + ")");
             }
+
         }
     }
 
