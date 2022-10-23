@@ -34,8 +34,8 @@ public class GuitarString {
      */
     public void tic() {
         double fItem = buffer.dequeue();
-        double SItem = buffer.peek();
-        double nItem = 0.5 * DECAY * (fItem + SItem);
+        double sItem = buffer.peek();
+        double nItem = 0.5 * DECAY * (fItem + sItem);
         buffer.enqueue(nItem);
     }
 
