@@ -3,12 +3,24 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 
+import java.util.Random;
+
 public class Game {
+    public class Position {
+        public int x;
+        public int y;
+
+        public Position(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
-    ter.initialize(WIDTH,HEIGHT);
+
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -33,9 +45,27 @@ public class Game {
         // TODO: Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
-
+        ter.initialize(WIDTH, HEIGHT);
         TETile[][] finalWorldFrame = new TETile[WIDTH][HEIGHT];
 
+        drawRandomRoom();
+
+//        ter.renderFrame(finalWorldFrame);
         return finalWorldFrame;
+    }
+
+    private void drawRandomRoom() {
+        Random r = new Random();
+        int wid = r.nextInt(WIDTH / 4) + 3;
+        int ht = r.nextInt(HEIGHT) + 3;
+
+        // To judege if the rectangle is within the range.
+
+        int initX = r.nextInt(WIDTH);
+        int initY = r.nextInt(HEIGHT);
+        // Draw two rectangles: first one with well and the second one with grass
+        for (int i = initX; i < initX + wid; i += 1) {
+
+        }
     }
 }
