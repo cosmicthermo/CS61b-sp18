@@ -2,8 +2,7 @@ package byog.lab6;
 
 import edu.princeton.cs.introcs.StdDraw;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.util.Random;
 
 public class MemoryGame {
@@ -15,8 +14,9 @@ public class MemoryGame {
     private boolean playerTurn;
     private static final char[] CHARACTERS = "abcdefghijklmnopqrstuvwxyz".toCharArray();
     private static final String[] ENCOURAGEMENT = {"You can do this!", "I believe in you!",
-                                                   "You got this!", "You're a star!", "Go Bears!",
-                                                   "Too easy for you!", "Wow, so impressive!"};
+            "You got this!", "You're a star!", "Go Bears!",
+            "Too easy for you!", "Wow, so impressive!"};
+    private static int sed;
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -25,6 +25,7 @@ public class MemoryGame {
         }
 
         int seed = Integer.parseInt(args[0]);
+        sed = seed;
         MemoryGame game = new MemoryGame(40, 40);
         game.startGame();
     }
@@ -44,16 +45,25 @@ public class MemoryGame {
         StdDraw.enableDoubleBuffering();
 
         //TODO: Initialize random number generator
+        rand = new Random(sed);
+        System.out.println(generateRandomString(6));
     }
 
     public String generateRandomString(int n) {
         //TODO: Generate random string of letters of length n
-        return null;
+        String rtStr = "";
+        int stCharArr = CHARACTERS.length;
+        for (int i = 0; i < n; i += 1) {
+            int index = rand.nextInt(stCharArr);
+            rtStr += CHARACTERS[index];
+        }
+        return rtStr;
     }
 
     public void drawFrame(String s) {
         //TODO: Take the string and display it in the center of the screen
         //TODO: If game is not over, display relevant game information at the top of the screen
+        
     }
 
     public void flashSequence(String letters) {
