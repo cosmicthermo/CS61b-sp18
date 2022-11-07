@@ -122,6 +122,9 @@ public class HexWorld {
             addNVerticalHexagon(world, p, sizeArry[i], sizeOfHExagon);
         }
 
+        System.out.println(TETile.toString(world));
+
+
         //Rendering the result.
         ter.renderFrame(world);
     }

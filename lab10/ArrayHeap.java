@@ -1,5 +1,6 @@
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * A Generic heap class. Unlike Java's priority queue, this heap doesn't just
@@ -27,24 +28,21 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      * Returns the index of the node to the left of the node at i.
      */
     private static int leftIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return 2 * i;
     }
 
     /**
      * Returns the index of the node to the right of the node at i.
      */
     private static int rightIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return 2 * i + 1;
     }
 
     /**
      * Returns the index of the node that is the parent of the node at i.
      */
     private static int parentIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return i / 2;
     }
 
     /**
@@ -99,6 +97,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         }
     }
 
+    private boolean greaterThan(int parent, int child) {
+        return getNode(parent).priority() >= getNode(child).priority();
+    }
 
     /**
      * Bubbles up the node currently at the given index.
@@ -107,9 +108,12 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
 
-        /** TODO: Your code here. */
-        return;
+        while (index > 1 && greaterThan(parentIndex(index), index)) {
+            swap(parentIndex(index), index);
+            index = parentIndex(index);
+        }
     }
+
 
     /**
      * Bubbles down the node currently at the given index.
@@ -118,8 +122,17 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
 
-        /** TODO: Your code here. */
-        return;
+        while (leftIndex(index) <= size) {
+            int j = leftIndex(index);
+            if (j < size && greaterThan(j, j + 1)) {
+                j++;
+            }
+            if (!greaterThan(index, j)) {
+                break;
+            }
+            swap(index, j);
+            index = j;
+        }
     }
 
     /**
@@ -133,7 +146,8 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             resize(contents.length * 2);
         }
 
-        /* TODO: Your code here! */
+        contents[++size] = new Node(item, priority);
+        swim(size);
     }
 
     /**
@@ -142,8 +156,8 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T peek() {
-        /* TODO: Your code here! */
-        return null;
+
+        return contents[1].item();
     }
 
     /**
@@ -157,8 +171,14 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
-        /* TODO: Your code here! */
-        return null;
+        Node smallest = new Node(contents[1].item(), contents[1].priority());
+        Node last = new Node(contents[size].item(), contents[size].priority());
+        contents[size] = null;
+        size--;
+        contents[1] = last;
+        sink(1);
+
+        return smallest.item();
     }
 
     /**
@@ -177,12 +197,46 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      * item. Check item equality with .equals(), not ==. This is a challenging
      * bonus problem, but shouldn't be too hard if you really understand heaps
      * and think about the algorithm before you start to code.
+     * Logic: 1. find the Item 2. smaller than children break 3. larger sink.
      */
     @Override
     public void changePriority(T item, double priority) {
         /* TODO: Your code here! */
-        return;
+        int target = -1;
+        for (int id = 1; id < this.size; id++) {
+            if (item.equals(contents[id].item())) {
+                target = id;
+                contents[id].myPriority = priority;
+            }
+        }
+        if (target == -1) {
+            return;
+        }
+        sink(target);
+        swim(target);
+
     }
+
+    @Test
+    public void testChangePrio() {
+        ArrayHeap<String> pq = new ArrayHeap<>();
+        pq.size = 7;
+        for (int i = 1; i <= 7; i += 1) {
+            pq.contents[i] = new ArrayHeap<String>.Node("x" + i, i + 1);
+        }
+        // Change root's priority to a large value.
+        System.out.println("PQ before sinking:");
+        System.out.println(pq);
+
+        pq.changePriority("x4", 1);
+        pq.changePriority("x3", 1000);
+        System.out.println(pq);
+        assertEquals(1.0, pq.contents[1].myPriority, 0.01);
+        assertEquals(1000.0, pq.contents[6].myPriority, 0.01);
+
+
+    }
+
 
     /**
      * Prints out the heap sideways. Provided for you.
@@ -238,7 +292,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             myPriority = priority;
         }
 
-        public T item(){
+        public T item() {
             return myItem;
         }
 
@@ -253,7 +307,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     }
 
 
-    /** Helper function to resize the backing array when necessary. */
+    /**
+     * Helper function to resize the backing array when necessary.
+     */
     private void resize(int capacity) {
         Node[] temp = new ArrayHeap.Node[capacity];
         for (int i = 1; i < this.contents.length; i++) {
@@ -273,6 +329,32 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         assertEquals(5, parentIndex(10));
         assertEquals(3, parentIndex(7));
         assertEquals(5, parentIndex(11));
+    }
+
+
+    @Test
+    public void testSink() {
+        ArrayHeap<String> pq = new ArrayHeap<>();
+        pq.size = 7;
+        for (int i = 1; i <= 7; i += 1) {
+            pq.contents[i] = new ArrayHeap<String>.Node("x" + i, i);
+        }
+        // Change root's priority to a large value.
+        pq.contents[1].myPriority = 10;
+        System.out.println("PQ before sinking:");
+        System.out.println(pq);
+
+        // Sink the root.
+        pq.sink(1);
+        System.out.println("PQ after sinking:");
+        System.out.println(pq);
+        assertEquals("x2", pq.contents[1].myItem);
+        assertEquals("x4", pq.contents[2].myItem);
+        assertEquals("x3", pq.contents[3].myItem);
+        assertEquals("x1", pq.contents[4].myItem);
+        assertEquals("x5", pq.contents[5].myItem);
+        assertEquals("x6", pq.contents[6].myItem);
+        assertEquals("x7", pq.contents[7].myItem);
     }
 
     @Test
@@ -299,31 +381,6 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         assertEquals("x4", pq.contents[4].myItem);
         assertEquals("x5", pq.contents[5].myItem);
         assertEquals("x3", pq.contents[6].myItem);
-        assertEquals("x7", pq.contents[7].myItem);
-    }
-
-    @Test
-    public void testSink() {
-        ArrayHeap<String> pq = new ArrayHeap<>();
-        pq.size = 7;
-        for (int i = 1; i <= 7; i += 1) {
-            pq.contents[i] = new ArrayHeap<String>.Node("x" + i, i);
-        }
-        // Change root's priority to a large value.
-        pq.contents[1].myPriority = 10;
-        System.out.println("PQ before sinking:");
-        System.out.println(pq);
-
-        // Sink the root.
-        pq.sink(1);
-        System.out.println("PQ after sinking:");
-        System.out.println(pq);
-        assertEquals("x2", pq.contents[1].myItem);
-        assertEquals("x4", pq.contents[2].myItem);
-        assertEquals("x3", pq.contents[3].myItem);
-        assertEquals("x1", pq.contents[4].myItem);
-        assertEquals("x5", pq.contents[5].myItem);
-        assertEquals("x6", pq.contents[6].myItem);
         assertEquals("x7", pq.contents[7].myItem);
     }
 
@@ -405,11 +462,14 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         pq.insert("b", 2);
         pq.insert("c", 3);
         pq.insert("d", 4);
+        System.out.println(pq);
 
         int i = 0;
         String[] expected = {"a", "b", "c", "c", "d", "d", "e", "g", "h", "i"};
         while (pq.size() > 1) {
-            assertEquals(expected[i], pq.removeMin());
+            String it = pq.removeMin();
+            assertEquals(expected[i], it);
+            System.out.println(pq);
             i += 1;
         }
     }
