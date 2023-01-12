@@ -156,7 +156,6 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T peek() {
-
         return contents[1].item();
     }
 
@@ -201,7 +200,6 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public void changePriority(T item, double priority) {
-        /* TODO: Your code here! */
         int target = -1;
         for (int id = 1; id < this.size; id++) {
             if (item.equals(contents[id].item())) {
