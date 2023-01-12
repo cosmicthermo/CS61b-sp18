@@ -71,6 +71,9 @@ public class MergeSort {
      */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
+        if (items.size() <= 1) {
+            return items;
+        }
         Queue<Item> copyItems = new Queue<Item>();
         for (Item i : items) {
             copyItems.enqueue(i);
